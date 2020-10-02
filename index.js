@@ -17,38 +17,38 @@ app.get('/',(req,res) => {
 })
 
 client.connect(err => {
-  const productscollection = client.db("emaJohn").collection("products");
-  const orderscollection = client.db("emaJohn").collection("orders");
+  const productsCollection = client.db("emaJohn").collection("products");
+  const ordersCollection = client.db("emaJohn").collection("orders");
   
   app.post('/addProduct',(req, res) => {
     const newProduct = req.body;
-    productscollection.insertOne(newProduct)
+    productsCollection.insertOne(newProduct)
     .then(result=>{
       res.send(result.insertedCount>0)
     })
   })
   app.get('/products',(req, res)=>{
-    productscollection.find({})
+    productsCollection.find({})
     .toArray((err,documents)=>{
       res.send(documents)
     })
   })
   app.get('/product/:key',(req, res)=>{
-    productscollection.find({key:req.params.key})
+    productsCollection.find({key:req.params.key})
     .toArray((err,documents)=>{
       res.send(documents[0])
     })
   })
   app.post('/productKeys',(req, res)=>{
     const productkeys = req.body
-    productscollection.find({key: { $in: productkeys}})
+    productsCollection.find({key: { $in: productkeys}})
     .toArray((err,documents)=>{
       res.send(documents);
     })
   })
   app.post('/addOrder',(req, res) => {
     const order = req.body;
-    orderscollection.insertOne(order)
+    ordersCollection.insertOne(order)
     .then(result=>{
       res.send(result.insertedCount>0)
     })
